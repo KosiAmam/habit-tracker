@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-surface-bg text-text-primary font-body antialiased overflow-x-hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-orange-primary ring-offset-1;
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply w-full min-h-screen;
+  }
+
+  .sheet-backdrop {
+    @apply fixed inset-0 bg-dark-primary/40 backdrop-blur-[2px] z-40;
+  }
+
+  .sheet-panel {
+    @apply fixed bottom-0 left-0 right-0 z-50 p-6 pb-10 bg-form-sheet;
+    border-radius: 24px 24px 0 0;
+  }
+
+  @media (min-width: 768px) {
+    .sheet-panel {
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+    }
+  }
+
+  .btn-primary {
+    @apply w-full bg-orange-primary text-white font-body font-semibold
+           py-4 rounded-btn text-base transition-opacity active:opacity-80 hover:opacity-90;
+  }
+
+  .btn-ghost {
+    @apply w-full bg-transparent border border-border text-text-primary
+           font-body font-medium py-4 rounded-btn text-base
+           transition-colors hover:bg-input-bg;
+  }
+
+  .form-input {
+    @apply w-full bg-input-bg border border-transparent rounded-input
+           px-4 py-3 text-base text-text-primary placeholder-text-secondary
+           transition-colors focus:border-orange-primary focus:bg-white;
+  }
+
+  .form-input.error {
+    @apply border-red-500 bg-red-50;
+  }
+
+  .form-label {
+    @apply block text-xs font-semibold tracking-widest uppercase
+           text-text-secondary mb-1.5;
+  }
+}
