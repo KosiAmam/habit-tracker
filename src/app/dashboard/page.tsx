@@ -1,7 +1,6 @@
 'use client';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Leaf } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import HabitList from '@/components/habits/HabitList';
 import { getSession, logOut } from '@/lib/auth';
@@ -30,55 +29,9 @@ function formatDate(d: Date) {
   });
 }
 
-function LogoutDialog({
-  onConfirm,
-  onCancel,
-}: {
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
-  return (
-    <>
-      <div className="sheet-backdrop" onClick={onCancel} />
-      <div
-        className="sheet-panel text-center"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="logout-dialog-title"
-      >
-        <div className="w-12 h-12 rounded-full bg-orange-light flex items-center justify-center mx-auto mb-4">
-          <LogOut size={22} className="text-orange-primary" strokeWidth={1.8} />
-        </div>
-        <h2
-          id="logout-dialog-title"
-          className="font-display text-xl font-bold text-dark-primary mb-2"
-        >
-          Log out?
-        </h2>
-        <p className="text-text-secondary text-sm mb-6">
-          Your streak will be right here when you return.
-        </p>
-        <div className="flex gap-3">
-          <button className="btn-ghost flex-1" onClick={onCancel}>
-            Cancel
-          </button>
-          <button
-            className="flex-1 bg-orange-primary text-white font-semibold py-4
-                       rounded-btn transition-opacity active:opacity-80"
-            onClick={onConfirm}
-          >
-            Log out
-          </button>
-        </div>
-      </div>
-    </>
-  );
-}
-
 function DashboardContent() {
   const router = useRouter();
   const session = getSession() as Session;
-  const [showLogout, setShowLogout] = useState(false);
 
   function handleLogout() {
     logOut();
@@ -107,7 +60,7 @@ function DashboardContent() {
             </span>
             <button
               data-testid="auth-logout-button"
-              onClick={() => setShowLogout(true)}
+              onClick={handleLogout}
               className="text-sm font-medium text-text-secondary border border-border
                          px-4 py-2 rounded-full hover:bg-input-bg transition-colors whitespace-nowrap"
             >
@@ -133,13 +86,6 @@ function DashboardContent() {
 
         <HabitList session={session} />
       </main>
-
-      {showLogout && (
-        <LogoutDialog
-          onConfirm={handleLogout}
-          onCancel={() => setShowLogout(false)}
-        />
-      )}
     </div>
   );
 }

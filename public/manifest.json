@@ -1,6 +1,6 @@
 {
   "name": "Habitual",
-  "short_name": "Habitual",
+  "short_name": "Habit Tracker",
   "description": "Build better days, one habit at a time",
   "start_url": "/",
   "display": "standalone",

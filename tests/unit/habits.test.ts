@@ -34,7 +34,6 @@ describe('toggleHabitCompletion', () => {
   });
 
   it('does not return duplicate completion dates', () => {
-    // Even if input somehow has dupes, output must be clean
     const habit = { ...BASE, completions: ['2026-04-26', '2026-04-26'] };
     const result = toggleHabitCompletion(habit, '2026-04-27');
     const unique = [...new Set(result.completions)];
