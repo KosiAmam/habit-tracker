@@ -1,18 +1,18 @@
 'use client';
+
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import SplashScreen from '@/components/shared/SplashScreen';
 import { getSession } from '@/lib/auth';
+import SplashScreen from '@/components/shared/SplashScreen';
 
 export default function RootPage() {
   const router = useRouter();
 
+  const session = getSession();
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace(getSession() ? '/dashboard' : '/login');
-    }, 1200);
-    return () => clearTimeout(timer);
-  }, [router]);
+    router.replace(session ? '/dashboard' : '/login');
+  }, []);
 
   return <SplashScreen />;
 }

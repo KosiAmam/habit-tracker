@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useRef } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSession } from '@/lib/auth';
 
@@ -9,18 +10,24 @@ export default function ProtectedRoute({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const session = getSession();
-  const redirected = useRef(false);
+
+  const [status, setStatus] = useState<'loading' | 'auth' | 'unauth'>(
+    'loading'
+  );
 
   useEffect(() => {
-    if (!session && !redirected.current) {
-      redirected.current = true;
-      router.replace('/login');
-    }
-  }, [router, session]);
+    const session = getSession();
 
-  // No session — render nothing and let the redirect happen
-  if (!session) return null;
+    if (!session) {
+      router.replace('/login');
+      setStatus('unauth');
+    } else {
+      setStatus('auth');
+    }
+  }, [router]);
+
+  if (status === 'loading') return null;
+  if (status === 'unauth') return null;
 
   return <>{children}</>;
 }

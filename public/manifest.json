@@ -1,7 +1,7 @@
 {
-  "name": "Habitual",
+  "name": "Habit Tracker",
   "short_name": "Habit Tracker",
-  "description": "Build better days, one habit at a time",
+  "description": "Consistency beats motivation",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

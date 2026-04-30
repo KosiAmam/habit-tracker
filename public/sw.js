@@ -1,6 +1,5 @@
 const CACHE = 'habit-tracker-v1';
 
-// App-shell resources to pre-cache on install
 const SHELL = ['/', '/login', '/signup', '/dashboard'];
 
 self.addEventListener('install', (event) => {
@@ -9,7 +8,6 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  // Remove stale caches
   event.waitUntil(
     caches
       .keys()
@@ -29,7 +27,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Cache successful responses
         const clone = response.clone();
         caches.open(CACHE).then((cache) => cache.put(event.request, clone));
         return response;

@@ -6,19 +6,22 @@
 
 # Test info
 
-- Name: app.spec.ts >> Habit Tracker app >> logs in an existing user and loads only that user's habits
-- Location: tests\e2e\app.spec.ts:65:7
+- Name: app.spec.ts >> Habit Tracker app >> shows the splash screen and redirects unauthenticated users to /login
+- Location: tests\e2e\app.spec.ts:26:7
 
 # Error details
 
 ```
-Test timeout of 30000ms exceeded.
-```
+Error: expect(locator).toBeVisible() failed
 
-```
-Error: locator.click: Test timeout of 30000ms exceeded.
+Locator: getByTestId('splash-screen')
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
 Call log:
-  - waiting for getByTestId('auth-logout-button')
+  - Expect "toBeVisible" with timeout 5000ms
+  - waiting for getByTestId('splash-screen')
 
 ```
 
@@ -75,8 +78,7 @@ Call log:
   16  | 
   17  | async function logout(page: Page) {
   18  |   await page.getByText('Log out').first().click();
-> 19  |   await page.getByTestId('auth-logout-button').click();
-      |                                                ^ Error: locator.click: Test timeout of 30000ms exceeded.
+  19  |   await page.getByTestId('auth-logout-button').click();
   20  |   await page.waitForURL('/login');
   21  | }
   22  | 
@@ -90,7 +92,8 @@ Call log:
   30  |     await clearStorage(page);
   31  |     await page.goto('/');
   32  | 
-  33  |     await expect(page.getByTestId('splash-screen')).toBeVisible();
+> 33  |     await expect(page.getByTestId('splash-screen')).toBeVisible();
+      |                                                     ^ Error: expect(locator).toBeVisible() failed
   34  |     await page.waitForURL('/login', { timeout: 5000 });
   35  |     await expect(page.getByTestId('auth-login-email')).toBeVisible();
   36  |   });
@@ -177,4 +180,18 @@ Call log:
   117 |   });
   118 | 
   119 |   test('persists session and habits after page reload', async ({ page }) => {
+  120 |     await signup(page, `persist-${Date.now()}@test.com`);
+  121 | 
+  122 |     await page.getByTestId('create-habit-button').first().click();
+  123 |     await page.getByTestId('habit-name-input').fill('Read Books');
+  124 |     await page.getByTestId('habit-save-button').click();
+  125 |     await expect(page.getByTestId('habit-card-read-books')).toBeVisible();
+  126 | 
+  127 |     // Reload — session and habits must survive
+  128 |     await page.reload();
+  129 |     await expect(page.getByTestId('dashboard-page')).toBeVisible();
+  130 |     await expect(page.getByTestId('habit-card-read-books')).toBeVisible();
+  131 |   });
+  132 | 
+  133 |   test('logs out and redirects to /login', async ({ page }) => {
 ```

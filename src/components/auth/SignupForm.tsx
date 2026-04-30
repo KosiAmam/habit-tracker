@@ -17,7 +17,7 @@ function BrandPanel() {
           <Leaf size={16} className="text-white" strokeWidth={2} />
         </div>
         <span className="font-display font-bold text-dark-primary text-lg tracking-tight">
-          Habitual
+          Habit Tracker
         </span>
       </div>
 
